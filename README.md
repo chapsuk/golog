@@ -1,5 +1,8 @@
 # Golog
 
+[![Build Status](https://travis-ci.org/chapsuk/golog.svg)](https://travis-ci.org/chapsuk/golog)
+[![Coverage Status](https://coveralls.io/repos/github/chapsuk/golog/badge.svg?branch=master)](https://coveralls.io/github/chapsuk/golog?branch=master)
+
 Hybrid from [logrus](https://github.com/Sirupsen/logrus) 
 and [logxi](https://github.com/mgutz/logxi/), thanks authors. ^_^
 
@@ -7,12 +10,12 @@ and [logxi](https://github.com/mgutz/logxi/), thanks authors. ^_^
 
 * fast as [logxi](https://github.com/mgutz/logxi/)
 * static and private context for log message as [logrus](https://github.com/Sirupsen/logrus)
-* without dependecies ([goconvey](https://github.com/smartystreets/goconvey) for tests)
+* without dependecies for `golog` package ([goconvey](https://github.com/smartystreets/goconvey) for tests)
 * tests  
 
 ## Benchmark
 
-Benchmark [source](https://github.com/mgutz/logxi/tree/master/v1/bench).
+Benchmark [source](https://github.com/chapsuk/golog/tree/master/bench/bench_test.go).
 
 ```
 BenchmarkLog-4          	   50000	     28870 ns/op	    4321 B/op	     100 allocs/op
@@ -44,4 +47,4 @@ See [example](examples/main.go).
 ## Tests
 
 1. Install [goconvey](https://github.com/smartystreets/goconvey)
-1. Run `$GOPATH/bin/goconvey` for watch test result in browser, or `go test ./...`.   
+1. Run `$GOPATH/bin/goconvey` for watch test result in browser, or `go test -v ./...`.   

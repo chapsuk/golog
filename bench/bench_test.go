@@ -33,7 +33,6 @@ func toJSON(m map[string]interface{}) string {
 }
 
 func BenchmarkLog(b *testing.B) {
-	//fmt.Println("")
 	l := L.New(os.Stderr, "bench ", L.LstdFlags)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -53,7 +52,6 @@ func BenchmarkLog(b *testing.B) {
 }
 
 func BenchmarkLogComplex(b *testing.B) {
-	//fmt.Println("")
 	l := L.New(os.Stderr, "bench ", L.LstdFlags)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -73,7 +71,6 @@ func BenchmarkLogComplex(b *testing.B) {
 }
 
 func BenchmarkLogxi(b *testing.B) {
-	//fmt.Println("")
 	stdout := log.NewConcurrentWriter(os.Stderr)
 	l := log.NewLogger3(stdout, "bench", log.NewJSONFormatter("bench"))
 	l.SetLevel(log.LevelDebug)
@@ -89,7 +86,6 @@ func BenchmarkLogxi(b *testing.B) {
 }
 
 func BenchmarkLogxiComplex(b *testing.B) {
-	//fmt.Println("")
 	stdout := log.NewConcurrentWriter(os.Stderr)
 	l := log.NewLogger3(stdout, "bench", log.NewJSONFormatter("bench"))
 	l.SetLevel(log.LevelDebug)
@@ -106,7 +102,6 @@ func BenchmarkLogxiComplex(b *testing.B) {
 }
 
 func BenchmarkLogrus(b *testing.B) {
-	//fmt.Println("")
 	l := logrus.New()
 	l.Out = os.Stderr
 	l.Formatter = &logrus.JSONFormatter{}
@@ -122,7 +117,6 @@ func BenchmarkLogrus(b *testing.B) {
 }
 
 func BenchmarkLogrusComplex(b *testing.B) {
-	//fmt.Println("")
 	l := logrus.New()
 	l.Out = os.Stderr
 	l.Formatter = &logrus.JSONFormatter{}
@@ -138,7 +132,6 @@ func BenchmarkLogrusComplex(b *testing.B) {
 }
 
 func BenchmarkLog15(b *testing.B) {
-	//fmt.Println("")
 	l := log15.New(log15.Ctx{"_n": "bench", "_p": pid})
 	l.SetHandler(log15.SyncHandler(log15.StreamHandler(os.Stderr, log15.JsonFormat())))
 
@@ -154,7 +147,6 @@ func BenchmarkLog15(b *testing.B) {
 }
 
 func BenchmarkLog15Complex(b *testing.B) {
-	//fmt.Println("")
 	l := log15.New(log15.Ctx{"_n": "bench", "_p": pid})
 	l.SetHandler(log15.SyncHandler(log15.StreamHandler(os.Stderr, log15.JsonFormat())))
 
@@ -169,7 +161,6 @@ func BenchmarkLog15Complex(b *testing.B) {
 }
 
 func BenchmarkGolog(b *testing.B) {
-	//fmt.Println("")
 	out := golog.NewCuncurrentWriter(os.Stderr)
 	l := golog.NewLogger(out, &golog.JSONFormatter{DateFormat: "15:04:05.000000"}, golog.Context{
 		"_n": "bench",
@@ -187,7 +178,6 @@ func BenchmarkGolog(b *testing.B) {
 }
 
 func BenchmarkGologComplex(b *testing.B) {
-	//fmt.Println("")
 	out := golog.NewCuncurrentWriter(os.Stderr)
 	l := golog.NewLogger(out, &golog.JSONFormatter{}, golog.Context{
 		"_n": "bench",

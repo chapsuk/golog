@@ -93,9 +93,7 @@ func (f *LogstashFormatter) appendValue(buf *bytes.Buffer, val interface{}) {
 			}
 
 			if err != nil {
-				// should never get here, but JSONFormatter should never panic
-				msg := "Could not Sprintf value"
-				buf.WriteString(`"` + msg + `"`)
+				buf.WriteString(`"Could not Sprintf value"`)
 				return
 			}
 		}

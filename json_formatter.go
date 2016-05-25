@@ -103,7 +103,6 @@ func (f *JSONFormatter) appendValue(buf *bytes.Buffer, val interface{}) {
 			}
 
 			if err != nil {
-				// should never get here, but JSONFormatter should never panic
 				buf.WriteString(`"Could not Sprintf value"`)
 				return
 			}
