@@ -8,7 +8,7 @@ import (
 // Level logging
 type Level uint8
 
-// Context sturcture
+// Context is log message context
 type Context map[string]interface{}
 
 // Formatter format log message to needed output

@@ -69,6 +69,10 @@
 			"Rev": "cc5d85f4f15bd2163abf0fe6e6753356dde72aa2"
 		},
 		{
+			"ImportPath": "github.com/uber-go/zap",
+			"Rev": "07c03a1899a7546575a8032c6eefc761741503ae"
+		},
+		{
 			"ImportPath": "golang.org/x/sys/unix",
 			"Rev": "d4feaf1a7e61e1d9e79e6c4e76c6349e9cab0a03"
 		},

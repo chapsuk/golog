@@ -9,6 +9,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/chapsuk/golog"
 	log "github.com/mgutz/logxi/v1"
+	"github.com/uber-go/zap"
 	"gopkg.in/inconshreveable/log15.v2"
 )
 
@@ -106,12 +107,13 @@ func BenchmarkLogrus(b *testing.B) {
 	l.Out = os.Stderr
 	l.Formatter = &logrus.JSONFormatter{}
 
+	context := logrus.Fields{"_n": "bench", "_p": pid, "key": 1, "key2": "string", "key3": false}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		l.WithFields(logrus.Fields{"_n": "bench", "_p": pid, "key": 1, "key2": "string", "key3": false}).Debug("debug")
-		l.WithFields(logrus.Fields{"_n": "bench", "_p": pid, "key": 1, "key2": "string", "key3": false}).Info("info")
-		l.WithFields(logrus.Fields{"_n": "bench", "_p": pid, "key": 1, "key2": "string", "key3": false}).Warn("warn")
-		l.WithFields(logrus.Fields{"_n": "bench", "_p": pid, "key": 1, "key2": "string", "key3": false}).Error("error")
+		l.WithFields(context).Debug("debug")
+		l.WithFields(context).Info("info")
+		l.WithFields(context).Warn("warn")
+		l.WithFields(context).Error("error")
 	}
 	b.StopTimer()
 }
@@ -121,12 +123,13 @@ func BenchmarkLogrusComplex(b *testing.B) {
 	l.Out = os.Stderr
 	l.Formatter = &logrus.JSONFormatter{}
 
+	context := logrus.Fields{"_n": "bench", "_p": pid, "key": 1, "obj": testObject}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		l.WithFields(logrus.Fields{"_n": "bench", "_p": pid, "key": 1, "obj": testObject}).Debug("debug")
-		l.WithFields(logrus.Fields{"_n": "bench", "_p": pid, "key": 1, "obj": testObject}).Info("info")
-		l.WithFields(logrus.Fields{"_n": "bench", "_p": pid, "key": 1, "obj": testObject}).Warn("warn")
-		l.WithFields(logrus.Fields{"_n": "bench", "_p": pid, "key": 1, "obj": testObject}).Error("error")
+		l.WithFields(context).Debug("debug")
+		l.WithFields(context).Info("info")
+		l.WithFields(context).Warn("warn")
+		l.WithFields(context).Error("error")
 	}
 	b.StopTimer()
 }
@@ -167,12 +170,13 @@ func BenchmarkGolog(b *testing.B) {
 		"_p": pid,
 	})
 
+	ctx := golog.Context{"key": 1, "key2": "string", "key3": false}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		l.DebugCtx(golog.Context{"key": 1, "key2": "string", "key3": false}, "debug")
-		l.InfoCtx(golog.Context{"key": 1, "key2": "string", "key3": false}, "info")
-		l.WarnCtx(golog.Context{"key": 1, "key2": "string", "key3": false}, "warn")
-		l.ErrorCtx(golog.Context{"key": 1, "key2": "string", "key3": false}, "error")
+		l.DebugCtx(ctx, "debug")
+		l.InfoCtx(ctx, "info")
+		l.WarnCtx(ctx, "warn")
+		l.ErrorCtx(ctx, "error")
 	}
 	b.StopTimer()
 }
@@ -184,12 +188,55 @@ func BenchmarkGologComplex(b *testing.B) {
 		"_p": pid,
 	})
 
+	ctx := golog.Context{"key": 1, "obj": testObject}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		l.DebugCtx(golog.Context{"key": 1, "obj": testObject}, "debug")
-		l.InfoCtx(golog.Context{"key": 1, "obj": testObject}, "info")
-		l.WarnCtx(golog.Context{"key": 1, "obj": testObject}, "warn")
-		l.ErrorCtx(golog.Context{"key": 1, "obj": testObject}, "error")
+		l.DebugCtx(ctx, "debug")
+		l.InfoCtx(ctx, "info")
+		l.WarnCtx(ctx, "warn")
+		l.ErrorCtx(ctx, "error")
+	}
+	b.StopTimer()
+}
+
+func BenchmarkZap(b *testing.B) {
+	context := []zap.Field{
+		zap.String("_n", "bench"),
+		zap.Int("_p", pid),
+	}
+	logger := zap.NewJSON(zap.All, zap.Output(zap.Discard), zap.Fields(context...))
+	pContext := []zap.Field{
+		zap.Int("key1", 1),
+		zap.String("key2", "string"),
+		zap.Bool("key", false),
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		logger.Debug("debug", pContext...)
+		logger.Info("info", pContext...)
+		logger.Warn("warn", pContext...)
+		logger.Error("error", pContext...)
+	}
+	b.StopTimer()
+}
+
+func BenchmarkZapComplex(b *testing.B) {
+	context := []zap.Field{
+		zap.String("_n", "bench"),
+		zap.Int("_p", pid),
+	}
+
+	logger := zap.NewJSON(zap.All, zap.Output(zap.Discard), zap.Fields(context...))
+	pContext := []zap.Field{
+		zap.Int("key", 1),
+		zap.Object("obj", testObject),
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		logger.Debug("debug", pContext...)
+		logger.Info("info", pContext...)
+		logger.Warn("warn", pContext...)
+		logger.Error("error", pContext...)
 	}
 	b.StopTimer()
 }
