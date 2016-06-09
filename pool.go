@@ -5,10 +5,12 @@ import (
 	"sync"
 )
 
+// BufferPool is pool of buffers
 type BufferPool struct {
 	Pool sync.Pool
 }
 
+// NewBufferPool yield new buffer poll instance
 func NewBufferPool() *BufferPool {
 	return &BufferPool{
 		Pool: sync.Pool{
@@ -21,10 +23,12 @@ func NewBufferPool() *BufferPool {
 	}
 }
 
+// Get buffer from pool
 func (p *BufferPool) Get() *bytes.Buffer {
 	return p.Pool.Get().(*bytes.Buffer)
 }
 
+// Put clear buffer and put to pool
 func (p *BufferPool) Put(b *bytes.Buffer) {
 	b.Reset()
 	p.Pool.Put(b)

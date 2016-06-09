@@ -16,43 +16,62 @@ type Formatter interface {
 	Format(*bytes.Buffer, Level, Context, string) *bytes.Buffer
 }
 
+// StandartLogger is log package interface
+type StandartLogger interface {
+	Print(...interface{})
+	Printf(string, ...interface{})
+	Println(...interface{})
+
+	Fatal(...interface{})
+	Fatalf(string, ...interface{})
+	Fatalln(...interface{})
+
+	Panic(...interface{})
+	Panicf(string, ...interface{})
+	Panicln(...interface{})
+}
+
 // ILogger interface
 type ILogger interface {
-	AppendContext(Context) ILogger
+	WithContext(Context) ILogger
 	GetContext() Context
 
 	SetFormatter(Formatter)
 	SetOutput(io.Writer)
 	SetLevel(Level)
 
-	Error(string)
-	ErrorCtx(Context, string)
-	Errorf(string, ...interface{})
-	ErrorfCtx(Context, string, ...interface{})
+	Print(...interface{})
+	Debug(...interface{})
+	Info(...interface{})
+	Warn(...interface{})
+	Error(...interface{})
+	Fatal(...interface{})
+	Panic(...interface{})
 
-	Debug(string)
-	DebugCtx(Context, string)
+	Printf(string, ...interface{})
 	Debugf(string, ...interface{})
-	DebugfCtx(Context, string, ...interface{})
-
-	Info(string)
-	InfoCtx(Context, string)
 	Infof(string, ...interface{})
-	InfofCtx(Context, string, ...interface{})
-
-	Warn(string)
-	WarnCtx(Context, string)
 	Warnf(string, ...interface{})
-	WarnfCtx(Context, string, ...interface{})
-
-	Fatal(string)
-	FatalCtx(Context, string)
+	Errorf(string, ...interface{})
 	Fatalf(string, ...interface{})
-	FatalfCtx(Context, string, ...interface{})
-
-	Panic(string)
-	PanicCtx(Context, string)
 	Panicf(string, ...interface{})
+
+	Println(...interface{})
+	Fatalln(...interface{})
+	Panicln(...interface{})
+
+	DebugCtx(Context, string)
+	InfoCtx(Context, string)
+	WarnCtx(Context, string)
+	ErrorCtx(Context, string)
+	FatalCtx(Context, string)
+	PanicCtx(Context, string)
+
+	DebugfCtx(Context, string, ...interface{})
+	InfofCtx(Context, string, ...interface{})
+	WarnfCtx(Context, string, ...interface{})
+	ErrorfCtx(Context, string, ...interface{})
+	FatalfCtx(Context, string, ...interface{})
 	PanicfCtx(Context, string, ...interface{})
 }
 

@@ -8,23 +8,23 @@
 Benchmark [source](https://github.com/chapsuk/golog/tree/master/bench/bench_test.go).
 
 ```
-BenchmarkLog-4          	   50000	     26232 ns/op	    4321 B/op	     100 allocs/op
-BenchmarkLogComplex-4   	   30000	     43646 ns/op	    8098 B/op	     188 allocs/op
+BenchmarkLog-4          	  100000	     24277 ns/op	    4321 B/op	     100 allocs/op
+BenchmarkLogComplex-4   	   30000	     42979 ns/op	    8098 B/op	     188 allocs/op
 
-BenchmarkLogxi-4        	  100000	     19736 ns/op	    2321 B/op	      58 allocs/op
-BenchmarkLogxiComplex-4 	   50000	     39830 ns/op	    5458 B/op	     154 allocs/op
+BenchmarkLogxi-4        	  100000	     18967 ns/op	    2321 B/op	      58 allocs/op
+BenchmarkLogxiComplex-4 	   30000	     39623 ns/op	    5458 B/op	     154 allocs/op
 
-BenchmarkLogrus-4       	   50000	     37878 ns/op	    6553 B/op	     137 allocs/op
-BenchmarkLogrusComplex-4	   30000	     49301 ns/op	    9362 B/op	     209 allocs/op
+BenchmarkLogrus-4       	   50000	     35746 ns/op	    6553 B/op	     137 allocs/op
+BenchmarkLogrusComplex-4	   30000	     49963 ns/op	    9362 B/op	     209 allocs/op
 
-BenchmarkLog15-4        	   30000	     58480 ns/op	    7970 B/op	     192 allocs/op
-BenchmarkLog15Complex-4 	   20000	     85335 ns/op	   11210 B/op	     242 allocs/op
+BenchmarkLog15-4        	   30000	     54347 ns/op	    7970 B/op	     192 allocs/op
+BenchmarkLog15Complex-4 	   20000	     80948 ns/op	   11210 B/op	     242 allocs/op
 
-BenchmarkGolog-4        	  100000	     20457 ns/op	    1694 B/op	      32 allocs/op
-BenchmarkGologComplex-4 	   30000	     41276 ns/op	    5151 B/op	     140 allocs/op
+BenchmarkGolog-4        	  100000	     20129 ns/op	    1693 B/op	      32 allocs/op
+BenchmarkGologComplex-4 	   30000	     42662 ns/op	    5150 B/op	     140 allocs/op
 
-BenchmarkZap-4          	 1000000	      2447 ns/op	       0 B/op	       0 allocs/op !!!
-BenchmarkZapComplex-4   	  100000	     22554 ns/op	    4129 B/op	     116 allocs/op !!!
+BenchmarkZap-4          	  500000	      2513 ns/op	       0 B/op	       0 allocs/op
+BenchmarkZapComplex-4   	   50000	     28183 ns/op	    4129 B/op	     116 allocs/op
 ```
 
 ## Install

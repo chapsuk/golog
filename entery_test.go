@@ -19,12 +19,12 @@ func TestEntery(t *testing.T) {
 		log := golog.NewLogger(out, &FakeFormatter{}, golog.Context{})
 		e := golog.NewEntery(log, golog.Context{})
 
-		test.Convey("check append context", func() {
+		test.Convey("check with context method", func() {
 			ctx := golog.Context{
 				"foo": foo,
 				"bar": bar,
 			}
-			ne := e.AppendContext(ctx)
+			ne := e.WithContext(ctx)
 
 			test.So(e.GetContext(), test.ShouldResemble, ctx)
 			test.So(ne.GetContext(), test.ShouldResemble, ctx)

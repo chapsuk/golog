@@ -5,21 +5,18 @@ import (
 	"os"
 )
 
+// Example struct
 type Example struct {
 	logger log.ILogger
 }
 
+// WriteInfo is sample function
 func (e Example) WriteInfo(msg string) {
 	e.logger.Info(msg)
 }
 
 func main() {
 	msg := "error: why so serious?!"
-	log.AppendContext(log.Context{
-		"host":    "localhost",
-		"channel": "Root",
-	})
-
 	log.ErrorCtx(log.Context{
 		"formatter": "text",
 	}, msg)
@@ -44,4 +41,11 @@ func main() {
 		logger: newLogger,
 	}
 	ex.WriteInfo("mmmm")
+
+	with := newLogger.WithContext(log.Context{
+		"host":    "localhost",
+		"channel": "Root",
+	})
+	with.Info("i`m with not newLogger")
+	newLogger.Info("real newLogger")
 }

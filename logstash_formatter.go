@@ -9,8 +9,10 @@ import (
 	"time"
 )
 
+// LogstashFormatter is log message formatter to logstash format
 type LogstashFormatter struct{}
 
+// Format log message to logstash format
 func (f *LogstashFormatter) Format(b *bytes.Buffer, lvl Level, ctx Context, msg string) *bytes.Buffer {
 	b.WriteString(`{"@timestamp":"`)
 	b.WriteString(time.Now().Format(time.RFC3339))

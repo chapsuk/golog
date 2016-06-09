@@ -6,10 +6,12 @@ import (
 	"time"
 )
 
+// TextFormatter formatter for console output
 type TextFormatter struct {
 	DateFormat string
 }
 
+// Format log message
 func (f *TextFormatter) Format(b *bytes.Buffer, lvl Level, ctx Context, msg string) *bytes.Buffer {
 	dateFormat := f.DateFormat
 	if dateFormat == "" {
