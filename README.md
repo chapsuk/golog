@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/chapsuk/golog.svg)](https://travis-ci.org/chapsuk/golog)
 [![Coverage Status](https://coveralls.io/repos/github/chapsuk/golog/badge.svg?branch=master)](https://coveralls.io/github/chapsuk/golog?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/chapsuk/golog)](https://goreportcard.com/report/github.com/chapsuk/golog)
 
 ## Benchmark
 
