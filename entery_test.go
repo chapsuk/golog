@@ -44,10 +44,10 @@ func TestEntery(t *testing.T) {
 			e.SetFormatter(&golog.JSONFormatter{DateFormat: " "}) // hack for empty time field
 
 			e.Info("info message")
-			test.So(out.log, test.ShouldContain, `{"_t":" ", "_l":"INFO", "_m":"info message"}`)
+			test.So(out.log, test.ShouldContain, "{\"_t\":\" \", \"_l\":\"INFO\", \"_m\":\"info message\"}\n")
 
 			log.Error("error message")
-			test.So(out.log, test.ShouldContain, `{"_t":" ", "_l":"ERROR", "_m":"error message"}`)
+			test.So(out.log, test.ShouldContain, "{\"_t\":\" \", \"_l\":\"ERROR\", \"_m\":\"error message\"}\n")
 		})
 
 		test.Convey("check set level", func() {

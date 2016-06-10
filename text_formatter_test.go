@@ -23,7 +23,7 @@ func TestTextFormatter(t *testing.T) {
 		test.Convey("write without context", func() {
 			log.Info("info message")
 
-			test.So(out.log, test.ShouldContain, "   INFO  []  info message")
+			test.So(out.log, test.ShouldContain, "   INFO  []  info message\n")
 		})
 
 		test.Convey("write with context (without sort) [foo: foo, err: err, int: 1]", func() {

@@ -38,6 +38,7 @@ func (f *JSONFormatter) Format(b *bytes.Buffer, lvl Level, ctx Context, msg stri
 	b.WriteString(`_m":"`)
 	b.WriteString(msg)
 	b.WriteString(`"}`)
+	b.WriteByte('\n')
 	return b
 }
 

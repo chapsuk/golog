@@ -46,5 +46,6 @@ func (f *TextFormatter) Format(b *bytes.Buffer, lvl Level, ctx Context, msg stri
 	b.WriteString("]  ")
 
 	b.WriteString(msg)
+	b.WriteByte('\n')
 	return b
 }
