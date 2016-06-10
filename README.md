@@ -41,3 +41,7 @@ See [example](examples/main.go).
 
 1. Install [goconvey](https://github.com/smartystreets/goconvey)
 1. Run `$GOPATH/bin/goconvey` for watch test result in browser, or `go test -v ./...`.   
+
+## License
+
+[MIT](https://github.com/chapsuk/golog/blob/master/LICENSE)
