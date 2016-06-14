@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -15,7 +16,7 @@ type LogstashFormatter struct{}
 // Format log message to logstash format
 func (f *LogstashFormatter) Format(b *bytes.Buffer, lvl Level, ctx Context, msg string) *bytes.Buffer {
 	b.WriteString(`{"@timestamp":"`)
-	b.WriteString(time.Now().Format(time.RFC3339))
+	b.WriteString(time.Now().Format(time.RFC3339Nano))
 	b.WriteString(`","@version":1,"level":"`)
 	b.WriteString(LevelToString(lvl))
 	b.WriteString(`","`)
@@ -28,7 +29,7 @@ func (f *LogstashFormatter) Format(b *bytes.Buffer, lvl Level, ctx Context, msg 
 	}
 
 	b.WriteString(`message":"`)
-	b.WriteString(msg)
+	b.WriteString(strings.TrimSpace(string(msg)))
 	b.WriteString(`"}`)
 	b.WriteByte('\n')
 	return b

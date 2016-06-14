@@ -51,7 +51,7 @@ func TestLogstashFormatter(t *testing.T) {
 				t.Error(err)
 			}
 
-			logTime, err := time.Parse(dateFormat, res.Time)
+			logTime, err := time.Parse(time.RFC3339Nano, res.Time)
 			if err != nil {
 				t.Error(err)
 			}
