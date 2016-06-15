@@ -52,26 +52,6 @@ func Println(args ...interface{}) {
 	std.Println(args...)
 }
 
-// Error write error log message
-func Error(args ...interface{}) {
-	std.Error(args...)
-}
-
-// ErrorCtx write error log message with context
-func ErrorCtx(ctx Context, m string) {
-	std.ErrorCtx(ctx, m)
-}
-
-// Errorf write error log message fmt.Printf style
-func Errorf(f string, args ...interface{}) {
-	std.Errorf(f, args...)
-}
-
-// ErrorfCtx write error log message with context, fmt.Printf style
-func ErrorfCtx(ctx Context, f string, args ...interface{}) {
-	std.ErrorfCtx(ctx, f, args...)
-}
-
 // Debug write debug log message
 func Debug(args ...interface{}) {
 	std.Debug(args...)
@@ -90,6 +70,11 @@ func Debugf(f string, args ...interface{}) {
 // DebugfCtx write debug log message with context, fmt.Sprtinf style
 func DebugfCtx(ctx Context, f string, args ...interface{}) {
 	std.DebugfCtx(ctx, f, args...)
+}
+
+// Debugln func
+func Debugln(args ...interface{}) {
+	std.Debugln(args...)
 }
 
 // Info write info log message
@@ -112,6 +97,11 @@ func InfofCtx(ctx Context, f string, args ...interface{}) {
 	std.InfofCtx(ctx, f, args...)
 }
 
+// Infoln func
+func Infoln(args ...interface{}) {
+	std.Infoln(args...)
+}
+
 // Warn write warning log message
 func Warn(args ...interface{}) {
 	std.Warn(args...)
@@ -130,6 +120,36 @@ func Warnf(f string, args ...interface{}) {
 // WarnfCtx write warning log message with context, fmt.Sprintf style
 func WarnfCtx(ctx Context, f string, args ...interface{}) {
 	std.WarnfCtx(ctx, f, args...)
+}
+
+// Warnln func
+func Warnln(args ...interface{}) {
+	std.Warnln(args...)
+}
+
+// Error write error log message
+func Error(args ...interface{}) {
+	std.Error(args...)
+}
+
+// ErrorCtx write error log message with context
+func ErrorCtx(ctx Context, m string) {
+	std.ErrorCtx(ctx, m)
+}
+
+// Errorf write error log message fmt.Printf style
+func Errorf(f string, args ...interface{}) {
+	std.Errorf(f, args...)
+}
+
+// ErrorfCtx write error log message with context, fmt.Printf style
+func ErrorfCtx(ctx Context, f string, args ...interface{}) {
+	std.ErrorfCtx(ctx, f, args...)
+}
+
+// Errorln func
+func Errorln(args ...interface{}) {
+	std.Errorln(args...)
 }
 
 // Fatal write fatal log message and call os.Exit

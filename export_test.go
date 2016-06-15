@@ -33,7 +33,7 @@ func TestExportGologPackage(t *testing.T) {
 			test.So(output.log, test.ShouldContain, foo)
 		})
 
-		test.Convey("check append global context", func() {
+		test.Convey("check with context", func() {
 			ctx := golog.Context{
 				"foo": foo,
 				"bar": bar,
@@ -41,7 +41,15 @@ func TestExportGologPackage(t *testing.T) {
 			log := golog.WithContext(ctx)
 
 			test.So(log.GetContext(), test.ShouldResemble, ctx)
-			test.So(golog.GetContext(), test.ShouldResemble, ctx)
+			test.So(golog.GetContext(), test.ShouldResemble, golog.Context{})
+		})
+
+		test.Convey("check Print* methods", func() {
+			golog.Print(foo)
+			golog.Printf("%s", bar)
+			golog.Println(foo, bar)
+
+			test.So(output.log, test.ShouldHaveLength, 3)
 		})
 
 		test.Convey("check Debug* methods", func() {
@@ -49,8 +57,9 @@ func TestExportGologPackage(t *testing.T) {
 			golog.Debugf("%s", bar)
 			golog.DebugCtx(golog.Context{}, baz)
 			golog.DebugfCtx(golog.Context{}, "%s", bee)
+			golog.Debugln(foo, bar)
 
-			test.So(output.log, test.ShouldHaveLength, 4)
+			test.So(output.log, test.ShouldHaveLength, 5)
 		})
 
 		test.Convey("check Info* methods", func() {
@@ -58,8 +67,9 @@ func TestExportGologPackage(t *testing.T) {
 			golog.Infof("%s", bar)
 			golog.InfoCtx(golog.Context{}, baz)
 			golog.InfofCtx(golog.Context{}, "%s", bee)
+			golog.Infoln(foo, bar)
 
-			test.So(output.log, test.ShouldHaveLength, 4)
+			test.So(output.log, test.ShouldHaveLength, 5)
 		})
 
 		test.Convey("check Warn* methods", func() {
@@ -67,8 +77,9 @@ func TestExportGologPackage(t *testing.T) {
 			golog.Warnf("%s", bar)
 			golog.WarnCtx(golog.Context{}, baz)
 			golog.WarnfCtx(golog.Context{}, "%s", bee)
+			golog.Warnln(foo, bar)
 
-			test.So(output.log, test.ShouldHaveLength, 4)
+			test.So(output.log, test.ShouldHaveLength, 5)
 		})
 
 		test.Convey("check Error* methods", func() {
@@ -76,28 +87,20 @@ func TestExportGologPackage(t *testing.T) {
 			golog.Errorf("%s", bar)
 			golog.ErrorCtx(golog.Context{}, baz)
 			golog.ErrorfCtx(golog.Context{}, "%s", bee)
+			golog.Errorln(foo, bar)
 
-			test.So(output.log, test.ShouldHaveLength, 4)
+			test.So(output.log, test.ShouldHaveLength, 5)
 		})
 
-		// TODO test os.Exit
-		//
-		// test.Convey("check Fatal* methods", func() {
-		// 	test.So(func() {
-		// 		golog.Fatal(foo)
-		// 	}, test.ShouldPanic)
-		// 	test.So(func() {
-		// 		golog.Fatalf("%s", bar)
-		// 	}, test.ShouldPanic)
-		// 	test.So(func() {
-		// 		golog.FatalCtx(golog.Context{}, baz)
-		// 	}, test.ShouldPanic)
-		// 	test.So(func() {
-		// 		golog.FatalfCtx(golog.Context{}, "%s", bee)
-		// 	}, test.ShouldPanic)
+		test.Convey("check Fatal* methods", func() {
+			golog.Fatal(foo)
+			golog.Fatalf("%s", bar)
+			golog.FatalCtx(golog.Context{}, baz)
+			golog.FatalfCtx(golog.Context{}, "%s", bee)
+			golog.Fatalln(foo, bar)
 
-		// 	test.So(output.log, test.ShouldHaveLength, 4)
-		// })
+			test.So(output.log, test.ShouldHaveLength, 5)
+		})
 
 		test.Convey("check Panic* methods", func() {
 			test.So(func() {
@@ -112,8 +115,10 @@ func TestExportGologPackage(t *testing.T) {
 			test.So(func() {
 				golog.PanicfCtx(golog.Context{}, "%s", bee)
 			}, test.ShouldPanic)
-
-			test.So(output.log, test.ShouldHaveLength, 4)
+			test.So(func() {
+				golog.Panicln(foo)
+			}, test.ShouldPanic)
+			test.So(output.log, test.ShouldHaveLength, 5)
 		})
 	})
 }

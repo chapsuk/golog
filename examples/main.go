@@ -3,6 +3,7 @@ package main
 import (
 	log "github.com/chapsuk/golog"
 	"os"
+	"time"
 )
 
 // Example struct
@@ -48,4 +49,17 @@ func main() {
 	})
 	with.Info("i`m with not newLogger")
 	newLogger.Info("real newLogger")
+
+	with.SetOutput(os.Stderr)
+	with.SetFormatter(&log.JSONFormatter{})
+	log.Print("ha")
+	with.Print("hoo")
+	newLogger.Print("hee")
+
+	// check syslog errors
+	w := log.NewSyslogWriter("localhost", "test", 1)
+	with.SetOutput(w)
+
+	with.Print("lol")
+	time.Sleep(15 * time.Second)
 }

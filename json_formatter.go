@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
-	"time"
 	"strings"
+	"time"
 )
 
 // JSONFormatter structure
