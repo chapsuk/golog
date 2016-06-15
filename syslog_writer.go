@@ -3,6 +3,7 @@ package golog
 import (
 	"io"
 	"log/syslog"
+	"os"
 	"time"
 )
 
@@ -17,6 +18,7 @@ func NewSyslogWriter(addr, tag string, timeout int) *SyslogWriter {
 	w, err := syslog.Dial("tcp", addr, syslog.LOG_USER, tag)
 
 	if err != nil {
+		s.Writer = NewCuncurrentWriter(os.Stdout)
 		std.Errorf("error connecting to syslog: %s", err.Error())
 
 		go func() {
