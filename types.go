@@ -17,7 +17,7 @@ type Formatter interface {
 }
 
 // StandartLogger is log package interface
-type StandartLogger interface {
+type StandardLogger interface {
 	Print(...interface{})
 	Printf(string, ...interface{})
 	Println(...interface{})
