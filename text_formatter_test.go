@@ -2,9 +2,10 @@ package golog_test
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/chapsuk/golog"
 	test "github.com/smartystreets/goconvey/convey"
-	"testing"
 )
 
 func TestTextFormatter(t *testing.T) {
@@ -22,7 +23,6 @@ func TestTextFormatter(t *testing.T) {
 
 		test.Convey("write without context", func() {
 			log.Info("info message")
-
 			test.So(out.log, test.ShouldContain, "   INFO  []  info message\n")
 		})
 
@@ -37,6 +37,12 @@ func TestTextFormatter(t *testing.T) {
 			for _, v := range out.log {
 				fmt.Print(v)
 			}
+		})
+		test.Convey("write with trace", func() {
+			log.SetTraceLevel(golog.DebugLevel)
+			test.So(out.log, test.ShouldBeEmpty)
+			log.Debug("trace debug")
+			test.So(out.log, test.ShouldNotBeEmpty)
 		})
 	})
 }

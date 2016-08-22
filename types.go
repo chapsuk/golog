@@ -13,10 +13,10 @@ type Context map[string]interface{}
 
 // Formatter format log message to needed output
 type Formatter interface {
-	Format(*bytes.Buffer, Level, Context, string) *bytes.Buffer
+	Format(out *bytes.Buffer, lvl Level, ctx Context, msg string, trace []byte) *bytes.Buffer
 }
 
-// StandartLogger is log package interface
+// StandardLogger is log package interface
 type StandardLogger interface {
 	Print(...interface{})
 	Printf(string, ...interface{})
@@ -39,6 +39,7 @@ type ILogger interface {
 	SetFormatter(Formatter)
 	SetOutput(io.Writer)
 	SetLevel(Level)
+	SetTraceLevel(Level)
 
 	Print(...interface{})
 	Debug(...interface{})

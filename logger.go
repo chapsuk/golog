@@ -4,38 +4,45 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"runtime/debug"
 	"sync"
 )
 
+// check interface implementation
+var _ ILogger = new(Logger)
+
 // Logger struct
 type Logger struct {
-	Level     Level
-	Writer    io.Writer
-	Formatter Formatter
-	mu        sync.Mutex
-	Pool      *BufferPool
-	Context   Context
+	Level      Level
+	TraceLevel Level
+	Writer     io.Writer
+	Formatter  Formatter
+	mu         sync.Mutex
+	Pool       *BufferPool
+	Context    Context
 }
 
 // New return default logger
 func New() *Logger {
 	return &Logger{
-		Level:     DebugLevel,
-		Formatter: &TextFormatter{},
-		Pool:      NewBufferPool(),
-		Writer:    NewCuncurrentWriter(os.Stdout),
-		Context:   Context{},
+		Level:      DebugLevel,
+		TraceLevel: PanicLevel,
+		Formatter:  &TextFormatter{},
+		Pool:       NewBufferPool(),
+		Writer:     NewCuncurrentWriter(os.Stdout),
+		Context:    Context{},
 	}
 }
 
 // NewLogger yield new logger instance
 func NewLogger(out io.Writer, f Formatter, ctx Context) *Logger {
 	return &Logger{
-		Level:     DebugLevel,
-		Formatter: f,
-		Pool:      NewBufferPool(),
-		Writer:    out,
-		Context:   ctx,
+		Level:      DebugLevel,
+		TraceLevel: PanicLevel,
+		Formatter:  f,
+		Pool:       NewBufferPool(),
+		Writer:     out,
+		Context:    ctx,
 	}
 }
 
@@ -63,6 +70,20 @@ func (l *Logger) GetLevel() Level {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 	return l.Level
+}
+
+// GetTraceLevel return max trace level
+func (l *Logger) GetTraceLevel() Level {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	return l.TraceLevel
+}
+
+// SetTraceLevel set max log level for adding trace
+func (l *Logger) SetTraceLevel(lvl Level) {
+	l.mu.Lock()
+	l.TraceLevel = lvl
+	l.mu.Unlock()
 }
 
 // SetLevel set max log level
@@ -264,9 +285,13 @@ func (l *Logger) Panicln(args ...interface{}) {
 
 func (l *Logger) log(lvl Level, ctx Context, msg string) {
 	if l.isAvailableLvl(lvl) {
+		var trace []byte
+		if l.isAvailableForTrace(lvl) {
+			trace = l.getTrace()
+		}
 		b := l.Pool.Get()
 		defer l.Pool.Put(b)
-		m := l.Formatter.Format(b, lvl, ctx, msg)
+		m := l.Formatter.Format(b, lvl, ctx, msg, trace)
 		_, err := l.Writer.Write(m.Bytes())
 		if err != nil {
 			fmt.Printf("can`t write to log, message: " + m.String())
@@ -276,6 +301,10 @@ func (l *Logger) log(lvl Level, ctx Context, msg string) {
 
 func (l *Logger) isAvailableLvl(lvl Level) bool {
 	return l.GetLevel() >= lvl
+}
+
+func (l *Logger) isAvailableForTrace(lvl Level) bool {
+	return l.GetTraceLevel() >= lvl
 }
 
 func (l *Logger) buildContext(ctx Context) Context {
@@ -289,4 +318,8 @@ func (l *Logger) buildContext(ctx Context) Context {
 		}
 	}
 	return n
+}
+
+func (l *Logger) getTrace() []byte {
+	return debug.Stack()
 }

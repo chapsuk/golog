@@ -3,10 +3,12 @@ package golog_test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/chapsuk/golog"
-	test "github.com/smartystreets/goconvey/convey"
+	"runtime/debug"
 	"testing"
 	"time"
+
+	"github.com/chapsuk/golog"
+	test "github.com/smartystreets/goconvey/convey"
 )
 
 type LogstashLogMessage struct {
@@ -14,6 +16,7 @@ type LogstashLogMessage struct {
 	Level   string `json:"level"`
 	Version int    `json:"@version"`
 	Msg     string `json:"message"`
+	Trace   string `json:"trace"`
 }
 
 type LogstashLogMessageWithContext struct {
@@ -44,7 +47,7 @@ func TestLogstashFormatter(t *testing.T) {
 
 		test.Convey("unmarshal log message", func() {
 			f := golog.LogstashFormatter{}
-			buf := f.Format(b, golog.DebugLevel, golog.Context{}, foo)
+			buf := f.Format(b, golog.DebugLevel, golog.Context{}, foo, []byte{})
 			res := LogstashLogMessage{}
 			err := json.Unmarshal(buf.Bytes(), &res)
 			if err != nil {
@@ -78,7 +81,7 @@ func TestLogstashFormatter(t *testing.T) {
 				"uptr":   uiptr,
 				"f32":    f32,
 			}
-			buf := f.Format(b, golog.InfoLevel, ctx, "prfile info")
+			buf := f.Format(b, golog.InfoLevel, ctx, "prfile info", []byte{})
 			res := LogstashLogMessageWithContext{}
 			err := json.Unmarshal(buf.Bytes(), &res)
 			if err != nil {
@@ -95,6 +98,19 @@ func TestLogstashFormatter(t *testing.T) {
 			test.So(res.Uint8, test.ShouldEqual, 1)
 			test.So(res.Uptr, test.ShouldEqual, uiptr)
 			test.So(res.F32, test.ShouldEqual, f32)
+		})
+
+		test.Convey("check correct trace", func() {
+			trace := debug.Stack()
+			f := golog.LogstashFormatter{}
+			buf := f.Format(b, golog.DebugLevel, golog.Context{}, foo, trace)
+			res := LogstashLogMessage{}
+			err := json.Unmarshal(buf.Bytes(), &res)
+			if err != nil {
+				t.Error(err)
+			}
+
+			test.So(res.Trace, test.ShouldEqual, string(trace))
 		})
 	})
 }

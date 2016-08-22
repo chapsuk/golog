@@ -6,13 +6,21 @@ import (
 	"time"
 )
 
+var _ Formatter = new(TextFormatter)
+
 // TextFormatter formatter for console output
 type TextFormatter struct {
 	DateFormat string
 }
 
 // Format log message
-func (f *TextFormatter) Format(b *bytes.Buffer, lvl Level, ctx Context, msg string) *bytes.Buffer {
+func (f *TextFormatter) Format(
+	b *bytes.Buffer,
+	lvl Level,
+	ctx Context,
+	msg string,
+	trace []byte,
+) *bytes.Buffer {
 	dateFormat := f.DateFormat
 	if dateFormat == "" {
 		dateFormat = time.RFC3339
@@ -47,5 +55,8 @@ func (f *TextFormatter) Format(b *bytes.Buffer, lvl Level, ctx Context, msg stri
 
 	b.WriteString(msg)
 	b.WriteByte('\n')
+	if len(trace) > 0 {
+		b.Write(trace)
+	}
 	return b
 }

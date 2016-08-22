@@ -6,15 +6,23 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
-	"strings"
 	"time"
 )
+
+// checl interface implementation
+var _ Formatter = new(LogstashFormatter)
 
 // LogstashFormatter is log message formatter to logstash format
 type LogstashFormatter struct{}
 
 // Format log message to logstash format
-func (f *LogstashFormatter) Format(b *bytes.Buffer, lvl Level, ctx Context, msg string) *bytes.Buffer {
+func (f *LogstashFormatter) Format(
+	b *bytes.Buffer,
+	lvl Level,
+	ctx Context,
+	msg string,
+	trace []byte,
+) *bytes.Buffer {
 	b.WriteString(`{"@timestamp":"`)
 	b.WriteString(time.Now().Format(time.RFC3339Nano))
 	b.WriteString(`","@version":1,"level":"`)
@@ -28,9 +36,13 @@ func (f *LogstashFormatter) Format(b *bytes.Buffer, lvl Level, ctx Context, msg 
 		b.WriteString(`,"`)
 	}
 
-	b.WriteString(`message":"`)
-	b.WriteString(strings.TrimSpace(string(msg)))
-	b.WriteString(`"}`)
+	b.WriteString(`message":`)
+	b.WriteString(strconv.Quote(string(msg)))
+	if len(trace) > 0 {
+		b.WriteString(`,"trace":`)
+		b.WriteString(strconv.Quote(string(trace)))
+	}
+	b.WriteString(`}`)
 	b.WriteByte('\n')
 	return b
 }

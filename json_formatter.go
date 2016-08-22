@@ -6,9 +6,11 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
-	"strings"
 	"time"
 )
+
+// checl interface implementation
+var _ Formatter = new(JSONFormatter)
 
 // JSONFormatter structure
 type JSONFormatter struct {
@@ -16,7 +18,13 @@ type JSONFormatter struct {
 }
 
 // Format log message to json format
-func (f *JSONFormatter) Format(b *bytes.Buffer, lvl Level, ctx Context, msg string) *bytes.Buffer {
+func (f *JSONFormatter) Format(
+	b *bytes.Buffer,
+	lvl Level,
+	ctx Context,
+	msg string,
+	trace []byte,
+) *bytes.Buffer {
 
 	dateFormat := f.DateFormat
 	if dateFormat == "" {
@@ -36,9 +44,14 @@ func (f *JSONFormatter) Format(b *bytes.Buffer, lvl Level, ctx Context, msg stri
 		b.WriteString(`, "`)
 	}
 
-	b.WriteString(`_m":"`)
-	b.WriteString(strings.TrimSpace(string(msg)))
-	b.WriteString(`"}`)
+	b.WriteString(`_m":`)
+	b.WriteString(strconv.Quote(string(msg)))
+	if len(trace) > 0 {
+		b.WriteString(`,"_trace":`)
+		b.WriteString(strconv.Quote(string(trace)))
+
+	}
+	b.WriteString(`}`)
 	b.WriteByte('\n')
 	return b
 }

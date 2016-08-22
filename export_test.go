@@ -12,7 +12,7 @@ import (
 type FakeFormatter struct{}
 
 // Format wirte to buffer only log message
-func (f *FakeFormatter) Format(b *bytes.Buffer, lvl golog.Level, ctx golog.Context, msg string) *bytes.Buffer {
+func (f *FakeFormatter) Format(b *bytes.Buffer, lvl golog.Level, ctx golog.Context, msg string, trace []byte) *bytes.Buffer {
 	b.WriteString(msg)
 	return b
 }

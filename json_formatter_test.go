@@ -3,6 +3,8 @@ package golog_test
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+	"runtime/debug"
 	"testing"
 	"time"
 
@@ -15,6 +17,7 @@ type JSONLogMessage struct {
 	Time  string `json:"_t"`
 	Level string `json:"_l"`
 	Msg   string `json:"_m"`
+	Trace string `json:"_trace"`
 }
 
 type JSONLogMessageWithContext struct {
@@ -45,7 +48,7 @@ func TestJSONFormatter(t *testing.T) {
 
 		test.Convey("unmarshal log message", func() {
 			f := golog.JSONFormatter{DateFormat: dateFormat}
-			buf := f.Format(b, golog.DebugLevel, golog.Context{}, foo)
+			buf := f.Format(b, golog.DebugLevel, golog.Context{}, foo, []byte{})
 			res := JSONLogMessage{}
 			err := json.Unmarshal(buf.Bytes(), &res)
 			if err != nil {
@@ -79,7 +82,7 @@ func TestJSONFormatter(t *testing.T) {
 				"uptr":   uiptr,
 				"f32":    f32,
 			}
-			buf := f.Format(b, golog.InfoLevel, ctx, "prfile info")
+			buf := f.Format(b, golog.InfoLevel, ctx, "prfile info", []byte{})
 			res := JSONLogMessageWithContext{}
 			err := json.Unmarshal(buf.Bytes(), &res)
 			if err != nil {
@@ -96,6 +99,20 @@ func TestJSONFormatter(t *testing.T) {
 			test.So(res.Uint8, test.ShouldEqual, 1)
 			test.So(res.Uptr, test.ShouldEqual, uiptr)
 			test.So(res.F32, test.ShouldEqual, f32)
+		})
+
+		test.Convey("check correct trace", func() {
+			f := golog.JSONFormatter{DateFormat: dateFormat}
+			trace := debug.Stack()
+			buf := f.Format(b, golog.DebugLevel, golog.Context{}, foo, trace)
+			golog.SetOutput(os.Stdout)
+			res := JSONLogMessage{}
+			err := json.Unmarshal(buf.Bytes(), &res)
+			if err != nil {
+				t.Error(err)
+			}
+
+			test.So(res.Trace, test.ShouldEqual, string(trace))
 		})
 	})
 }
