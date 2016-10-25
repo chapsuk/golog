@@ -17,4 +17,4 @@ before_script:
 
 script: 
   - GORACE="halt_on_error=1" go test -race -v ./...
-  - $GOPATH/bin/goveralls -service=travis-ci
+  #- $GOPATH/bin/goveralls -service=travis-ci
