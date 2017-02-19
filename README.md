@@ -6,9 +6,7 @@
 
 ## Install
 
-```
-go get github.com/chapsuk/golog
-```
+`go get github.com/chapsuk/golog`
 
 ## Usage
 
@@ -16,31 +14,32 @@ go get github.com/chapsuk/golog
 package main
 
 import (
-	"github.com/chapsuk/golog"
+    "github.com/chapsuk/golog"
 )
 
 func main() {
     // golog.SetFormatter(&golog.JSONFormatter)
     // golog.SetFormatter(&golog.LogstashFormatter{})
     golog.SetFormatter(&golog.TextFormatter{}) // not needed, TextFormatter by default
-	golog.Info("Hallo")
+    golog.Info("Hallo")
 
     logger := golog.WithContext(golog.Context{
-		"host":  "localhost",
-		"place": "example",
-	})
+        "host":  "localhost",
+        "place": "example",
+    })
     logger.Warn("why so serious?!")
-    
+
     logger.ErrorCtx(golog.Context{
         "uid": 666,
     }, "Omen detected")
-    
+
     logger.Fatalf("The %s!", "end")
 }
 ```
 
 Output:
-```
+
+```bash
 // JSONFormatter
 {"_t":"2016-06-10T12:26:20+03:00", "_l":"INFO", "_m":"Hallo"}
 {"_t":"2016-06-10T12:26:20+03:00", "_l":"WARN", "host":"localhost", "place":"example", "_m":"why so serious?!"}
@@ -71,24 +70,24 @@ exit status 1
 
 Benchmark [source](https://github.com/chapsuk/golog/tree/master/bench/bench_test.go).
 
-```
-BenchmarkLog-4                 	  100000       	     18779 ns/op       	    4321 B/op  	     100 allocs/op
-BenchmarkLogComplex-4          	   50000       	     36016 ns/op       	    8098 B/op  	     188 allocs/op
-
-BenchmarkLogxi-4               	  100000       	     14085 ns/op       	    2321 B/op  	      58 allocs/op
-BenchmarkLogxiComplex-4        	   50000       	     33903 ns/op       	    5458 B/op  	     154 allocs/op
-
-BenchmarkLogrus-4              	   50000       	     31901 ns/op       	    6553 B/op  	     137 allocs/op
-BenchmarkLogrusComplex-4       	   30000       	     43655 ns/op       	    9362 B/op  	     209 allocs/op
-
-BenchmarkLog15-4               	   30000       	     48224 ns/op       	    7970 B/op  	     192 allocs/op
-BenchmarkLog15Complex-4        	   20000       	     67186 ns/op       	   11218 B/op  	     242 allocs/op
-
-BenchmarkGolog-4               	  100000       	     18769 ns/op       	    3060 B/op  	      52 allocs/op
-BenchmarkGologComplex-4        	   30000       	     38751 ns/op       	    6517 B/op  	     160 allocs/op
-
-BenchmarkZap-4                 	 1000000       	      2527 ns/op       	       0 B/op  	       0 allocs/op
-BenchmarkZapComplex-4          	   50000       	     23546 ns/op       	    4129 B/op  	     116 allocs/op
+```bash
+≻ go test -v -bench=. -benchmem ./bench/bench_test.go 2>/dev/null
+BenchmarkLog-4                    100000             31437 ns/op            5345 B/op        112 allocs/op
+BenchmarkLogComplex-4              20000             50919 ns/op           10915 B/op        224 allocs/op
+BenchmarkLogxi-4                  100000             17629 ns/op            2321 B/op         58 allocs/op
+BenchmarkLogxiComplex-4            30000             40875 ns/op            7379 B/op        178 allocs/op
+BenchmarkLogrus-4                  30000             49576 ns/op            8253 B/op        139 allocs/op
+BenchmarkLogrusComplex-4           20000             50315 ns/op           11544 B/op        229 allocs/op
+BenchmarkLog15-4                   30000             48401 ns/op            9634 B/op        204 allocs/op
+BenchmarkLog15Complex-4            20000             96301 ns/op           12751 B/op        254 allocs/op
+BenchmarkGolog-4                   50000             22442 ns/op            3060 B/op         52 allocs/op
+BenchmarkGologComplex-4            30000             39815 ns/op            8438 B/op        184 allocs/op
+BenchmarkZapSugar-4              1000000              2200 ns/op             350 B/op         24 allocs/op
+BenchmarkZapSugarComplex-4        100000             17372 ns/op            2386 B/op         73 allocs/op
+BenchmarkZap-4                   1000000              1884 ns/op             785 B/op          4 allocs/op
+BenchmarkZapComplex-4             500000              2050 ns/op             576 B/op          5 allocs/op
+PASS
+ok      command-line-arguments  28.506s
 ```
 
 ## License

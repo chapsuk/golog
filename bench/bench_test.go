@@ -9,7 +9,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/chapsuk/golog"
 	log "github.com/mgutz/logxi/v1"
-	"github.com/uber-go/zap"
+	"go.uber.org/zap"
 	"gopkg.in/inconshreveable/log15.v2"
 )
 
@@ -199,44 +199,58 @@ func BenchmarkGologComplex(b *testing.B) {
 	b.StopTimer()
 }
 
-func BenchmarkZap(b *testing.B) {
-	context := []zap.Field{
-		zap.String("_n", "bench"),
-		zap.Int("_p", pid),
-	}
-	logger := zap.NewJSON(zap.All, zap.Output(zap.Discard), zap.Fields(context...))
-	pContext := []zap.Field{
-		zap.Int("key1", 1),
-		zap.String("key2", "string"),
-		zap.Bool("key", false),
-	}
+func BenchmarkZapSugar(b *testing.B) {
+	logger, _ := zap.NewProduction()
+	sugar := logger.Sugar()
+	sugar = sugar.With("_n", "bench", "_p", pid)
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		logger.Debug("debug", pContext...)
-		logger.Info("info", pContext...)
-		logger.Warn("warn", pContext...)
-		logger.Error("error", pContext...)
+		sugar.Debugw("debug", "key", 1, "key2", "string", "key3", false)
+		sugar.Infow("info", "key", 1, "key2", "string", "key3", false)
+		sugar.Warnw("warn", "key", 1, "key2", "string", "key3", false)
+		sugar.Errorw("error", "key", 1, "key2", "string", "key3", false)
+	}
+	b.StopTimer()
+}
+
+func BenchmarkZapSugarComplex(b *testing.B) {
+	logger, _ := zap.NewProduction()
+	sugar := logger.Sugar()
+	sugar = sugar.With("_n", "bench", "_p", pid)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		sugar.Debug("debug", "key", 1, "obj", testObject)
+		sugar.Info("info", "key", 1, "obj", testObject)
+		sugar.Warn("warn", "key", 1, "obj", testObject)
+		sugar.Error("error", "key", 1, "obj", testObject)
+	}
+	b.StopTimer()
+}
+
+func BenchmarkZap(b *testing.B) {
+	logger, _ := zap.NewProduction()
+	logger = logger.With(zap.String("_n", "bench"), zap.Int("_p", pid))
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		logger.Debug("debug", zap.Int("key1", 1), zap.String("key2", "string"), zap.Bool("key", false))
+		logger.Info("info", zap.Int("key1", 1), zap.String("key2", "string"), zap.Bool("key", false))
+		logger.Warn("warn", zap.Int("key1", 1), zap.String("key2", "string"), zap.Bool("key", false))
+		logger.Error("error", zap.Int("key1", 1), zap.String("key2", "string"), zap.Bool("key", false))
 	}
 	b.StopTimer()
 }
 
 func BenchmarkZapComplex(b *testing.B) {
-	context := []zap.Field{
-		zap.String("_n", "bench"),
-		zap.Int("_p", pid),
-	}
-
-	logger := zap.NewJSON(zap.All, zap.Output(zap.Discard), zap.Fields(context...))
-	pContext := []zap.Field{
-		zap.Int("key", 1),
-		zap.Object("obj", testObject),
-	}
+	logger, _ := zap.NewProduction()
+	logger = logger.With(zap.String("_n", "bench"), zap.Int("_p", pid))
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		logger.Debug("debug", pContext...)
-		logger.Info("info", pContext...)
-		logger.Warn("warn", pContext...)
-		logger.Error("error", pContext...)
+		logger.Debug("debug", zap.Int("key1", 1), zap.Any("obj", testObject))
+		logger.Info("info", zap.Int("key1", 1), zap.Any("obj", testObject))
+		logger.Warn("warn", zap.Int("key1", 1), zap.Any("obj", testObject))
+		logger.Error("error", zap.Int("key1", 1), zap.Any("obj", testObject))
 	}
 	b.StopTimer()
 }

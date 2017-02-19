@@ -1,19 +1,18 @@
 {
 	"ImportPath": "github.com/chapsuk/golog",
-	"GoVersion": "go1.6",
-	"GodepVersion": "v62",
+	"GoVersion": "go1.7",
+	"GodepVersion": "v77",
 	"Packages": [
 		"./..."
 	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/Sirupsen/logrus",
-			"Comment": "v0.10.0-18-g6d9ae30",
-			"Rev": "6d9ae300aaf85d6acd2e5424081c7fcddb21dab8"
+			"Comment": "v0.11.2-6-g7f4b1ad",
+			"Rev": "7f4b1adc791766938c29457bed0703fb9134421a"
 		},
 		{
 			"ImportPath": "github.com/gopherjs/gopherjs/js",
-			"Comment": "go1.5-56-gf627518",
 			"Rev": "f6275185df124b006416e1be1c791b000619867f"
 		},
 		{
@@ -36,7 +35,7 @@
 		},
 		{
 			"ImportPath": "github.com/mgutz/logxi/v1",
-			"Rev": "7d364cab682d1b7b9063a3293c9e8c3087194940"
+			"Rev": "aebf8a7d67ab4625e0fd4a665766fef9a709161b"
 		},
 		{
 			"ImportPath": "github.com/smartystreets/assertions",
@@ -69,8 +68,39 @@
 			"Rev": "cc5d85f4f15bd2163abf0fe6e6753356dde72aa2"
 		},
 		{
-			"ImportPath": "github.com/uber-go/zap",
-			"Rev": "07c03a1899a7546575a8032c6eefc761741503ae"
+			"ImportPath": "go.uber.org/atomic",
+			"Comment": "v1.0.0-7-g3b8db5e",
+			"Rev": "3b8db5e93c4c02efbc313e17b2e796b0914a01fb"
+		},
+		{
+			"ImportPath": "go.uber.org/zap",
+			"Comment": "v1.0.0-rc.1-7-g9c5f3d4",
+			"Rev": "9c5f3d4f035ad2db8a1cd8a1b281c84afb4e2e2f"
+		},
+		{
+			"ImportPath": "go.uber.org/zap/buffer",
+			"Comment": "v1.0.0-rc.1-7-g9c5f3d4",
+			"Rev": "9c5f3d4f035ad2db8a1cd8a1b281c84afb4e2e2f"
+		},
+		{
+			"ImportPath": "go.uber.org/zap/internal/bufferpool",
+			"Comment": "v1.0.0-rc.1-7-g9c5f3d4",
+			"Rev": "9c5f3d4f035ad2db8a1cd8a1b281c84afb4e2e2f"
+		},
+		{
+			"ImportPath": "go.uber.org/zap/internal/exit",
+			"Comment": "v1.0.0-rc.1-7-g9c5f3d4",
+			"Rev": "9c5f3d4f035ad2db8a1cd8a1b281c84afb4e2e2f"
+		},
+		{
+			"ImportPath": "go.uber.org/zap/internal/multierror",
+			"Comment": "v1.0.0-rc.1-7-g9c5f3d4",
+			"Rev": "9c5f3d4f035ad2db8a1cd8a1b281c84afb4e2e2f"
+		},
+		{
+			"ImportPath": "go.uber.org/zap/zapcore",
+			"Comment": "v1.0.0-rc.1-7-g9c5f3d4",
+			"Rev": "9c5f3d4f035ad2db8a1cd8a1b281c84afb4e2e2f"
 		},
 		{
 			"ImportPath": "golang.org/x/sys/unix",
