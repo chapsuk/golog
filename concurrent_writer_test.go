@@ -26,7 +26,7 @@ func (fw *FakeWriter) Write(m []byte) (int, error) {
 func TestCuncurrentWriter(t *testing.T) {
 	test.Convey("Write many messages", t, func() {
 		fw := &FakeWriter{}
-		w := golog.NewCuncurrentWriter(fw)
+		w := golog.NewConcurrentWriter(fw)
 		w.Write([]byte(foo))
 		w.Write([]byte(bar))
 		w.Write([]byte(baz))

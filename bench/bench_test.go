@@ -164,7 +164,7 @@ func BenchmarkLog15Complex(b *testing.B) {
 }
 
 func BenchmarkGolog(b *testing.B) {
-	out := golog.NewCuncurrentWriter(os.Stderr)
+	out := golog.NewConcurrentWriter(os.Stderr)
 	l := golog.NewLogger(out, &golog.JSONFormatter{DateFormat: "15:04:05.000000"}, golog.Context{
 		"_n": "bench",
 		"_p": pid,
@@ -182,7 +182,7 @@ func BenchmarkGolog(b *testing.B) {
 }
 
 func BenchmarkGologComplex(b *testing.B) {
-	out := golog.NewCuncurrentWriter(os.Stderr)
+	out := golog.NewConcurrentWriter(os.Stderr)
 	l := golog.NewLogger(out, &golog.JSONFormatter{}, golog.Context{
 		"_n": "bench",
 		"_p": pid,

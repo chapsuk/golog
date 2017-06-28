@@ -29,7 +29,7 @@ func New() *Logger {
 		TraceLevel: PanicLevel,
 		Formatter:  &TextFormatter{},
 		Pool:       NewBufferPool(),
-		Writer:     NewCuncurrentWriter(os.Stdout),
+		Writer:     NewConcurrentWriter(os.Stdout),
 		Context:    Context{},
 	}
 }
