@@ -57,7 +57,7 @@ func main() {
 	newLogger.Print("hee")
 
 	// check syslog errors
-	w := log.NewSyslogWriter("tcp", "localhost", "test", 1)
+	w := log.NewSyslogWriter("tcp", "localhost", "test", time.Second)
 	with.SetOutput(w)
 
 	with.Print("lol")

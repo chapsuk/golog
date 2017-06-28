@@ -18,9 +18,9 @@ type SyslogWriter struct {
 }
 
 // NewSyslogWriter return new SyslogWriter instance with concurrent writer to syslog
-func NewSyslogWriter(network, addr, tag string, timeout int) *SyslogWriter {
+func NewSyslogWriter(network, addr, tag string, timeout time.Duration) *SyslogWriter {
 	s := &SyslogWriter{
-		timeout: time.Second * time.Duration(timeout),
+		timeout: timeout,
 		done:    make(chan struct{}),
 	}
 	w, err := syslog.Dial(network, addr, syslog.LOG_USER, tag)
