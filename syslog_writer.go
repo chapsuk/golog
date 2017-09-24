@@ -30,6 +30,8 @@ func NewSyslogWriter(network, addr, tag string, timeout time.Duration) *SyslogWr
 
 		go func() {
 			t := time.NewTicker(s.timeout)
+			defer t.Stop()
+
 			for {
 				select {
 				case <-t.C:
@@ -39,13 +41,12 @@ func NewSyslogWriter(network, addr, tag string, timeout time.Duration) *SyslogWr
 						continue
 					}
 
-					t.Stop()
 					s.mu.Lock()
 					s.Writer = w
 					s.mu.Unlock()
-					break
+					return
 				case <-s.done:
-					break
+					return
 				}
 			}
 		}()
